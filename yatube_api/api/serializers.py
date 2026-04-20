@@ -42,8 +42,7 @@ class FollowSerializer(serializers.ModelSerializer):
     def validate_following(self, value):
         request = self.context.get('request')
         if request and request.user == value:
-            raise
-        serializers.ValidationError('Нельзя подписаться на самого себя!')
+            raise serializers.ValidationError('Нельзя подписаться на cебя!')
         return value
 
     def validate(self, data):
@@ -51,8 +50,7 @@ class FollowSerializer(serializers.ModelSerializer):
         if request and Follow.objects.filter(
             user=request.user, following=data['following']
         ).exists():
-            raise
-        serializers.ValidationError('Вы уже подписаны на этого пользователя!')
+            raise serializers.ValidationError('Вы уже подписаны пользователя!')
         return data
 
 
